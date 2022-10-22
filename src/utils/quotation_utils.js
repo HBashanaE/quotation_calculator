@@ -1,3 +1,4 @@
+const { roundToNearest30Mminutes } = require("./common_utils");
 const {
   congestionCharge,
   lateCharge,
@@ -10,12 +11,12 @@ const {
 
 const getTotalTime = (driveTime) => {
   if (driveTime < 60) {
-    return getStandardLodingnlodingTime() + driveTime;
+    return getStandardLodingUnloadingTime() + driveTime;
   }
-  return Math.round((getStandardLodingnlodingTime() + driveTime) * 2) / 2;
+  return roundToNearest30Mminutes(getStandardLodingUnloadingTime() + driveTime);
 };
 
-const getStandardLodingnlodingTime = () => {
+const getStandardLodingUnloadingTime = () => {
   return 60;
 };
 
