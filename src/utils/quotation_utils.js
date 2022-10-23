@@ -1,4 +1,4 @@
-const { roundToNearest30Mminutes } = require("./common_utils");
+const { roundToNearest30Minutes } = require("./common_utils");
 const {
   congestionCharge,
   lateCharge,
@@ -11,12 +11,12 @@ const {
 
 const getTotalTime = (driveTime) => {
   if (driveTime < 60) {
-    return getStandardLodingUnloadingTime() + driveTime;
+    return getStandardLoadingUnloadingTime() + driveTime;
   }
-  return roundToNearest30Mminutes(getStandardLodingUnloadingTime() + driveTime);
+  return roundToNearest30Minutes(getStandardLoadingUnloadingTime() + driveTime);
 };
 
-const getStandardLodingUnloadingTime = () => {
+const getStandardLoadingUnloadingTime = () => {
   return 60;
 };
 
@@ -28,8 +28,8 @@ const calculateLateCharge = (isLate, lateHours) => {
   return isLate ? lateCharge : 0;
 };
 
-const getCarbonOffset = (isCaronOffset) => {
-  return isCaronOffset ? carbonOffset : 0;
+const getCarbonOffset = (isCarbonOffset) => {
+  return isCarbonOffset ? carbonOffset : 0;
 };
 
 const calculateMilageCharge = (distanceTravelled) => {
@@ -78,4 +78,6 @@ module.exports = {
   calculateLateCharge,
   getCarbonOffset,
   calculateMilageCharge,
+  getStandardLoadingUnloadingTime,
+  getTotalTime,
 };
