@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.helperHourlyRate = exports.driverHourlyRate = exports.floorChargePerFloor = exports.perMileCharge = exports.carbonOffset = exports.lateCharge = exports.congestionCharge = void 0;
+exports.congestionCharge = 15;
+exports.lateCharge = 4;
+exports.carbonOffset = 5;
+exports.perMileCharge = 1;
+exports.floorChargePerFloor = 15;
+exports.driverHourlyRate = 1;
+exports.helperHourlyRate = 1;

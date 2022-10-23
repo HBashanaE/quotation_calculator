@@ -1,5 +1,5 @@
-const { roundToNearest30Minutes } = require("./common_utils");
-const {
+import { roundToNearest30Minutes } from "./common_utils";
+import {
   congestionCharge,
   lateCharge,
   carbonOffset,
@@ -7,54 +7,54 @@ const {
   driverHourlyRate,
   helperHourlyRate,
   floorChargePerFloor,
-} = require("../const");
+} from "../const";
 
-const getTotalTime = (driveTime) => {
+export const getTotalTime = (driveTime: number) => {
   if (driveTime < 60) {
     return getStandardLoadingUnloadingTime() + driveTime;
   }
   return roundToNearest30Minutes(getStandardLoadingUnloadingTime() + driveTime);
 };
 
-const getStandardLoadingUnloadingTime = () => {
+export const getStandardLoadingUnloadingTime = () => {
   return 60;
 };
 
-const getCongestionCharge = (isCongested) => {
+export const getCongestionCharge = (isCongested: boolean) => {
   return isCongested ? congestionCharge : 0;
 };
 
-const calculateLateCharge = (isLate, lateHours) => {
+export const calculateLateCharge = (isLate: boolean, lateHours: number) => {
   return isLate ? lateCharge : 0;
 };
 
-const getCarbonOffset = (isCarbonOffset) => {
+export const getCarbonOffset = (isCarbonOffset: boolean) => {
   return isCarbonOffset ? carbonOffset : 0;
 };
 
-const calculateMilageCharge = (distanceTravelled) => {
+export const calculateMilageCharge = (distanceTravelled: number) => {
   return distanceTravelled * perMileCharge;
 };
 
-const calculateDriverCharge = (totalTime) => {
+export const calculateDriverCharge = (totalTime: number) => {
   return (totalTime / 60) * driverHourlyRate;
 };
 
-const calculateHelperCharge = (totalTime) => {
+export const calculateHelperCharge = (totalTime: number) => {
   return (totalTime / 60) * helperHourlyRate;
 };
 
-const calculateFloorCharge = (noOfFloors) => {
+export const calculateFloorCharge = (noOfFloors: number) => {
   return floorChargePerFloor * noOfFloors;
 };
 
-const calculatePrice = (
-  floorCharge,
-  congestionCharge,
-  lateChage,
-  carbonOffset,
-  milageCharge,
-  driveTime
+export const calculatePrice = (
+  floorCharge: number,
+  congestionCharge: number,
+  lateChage: number,
+  carbonOffset: number,
+  milageCharge: number,
+  driveTime: number
 ) => {
   const totalTime = getTotalTime(driveTime);
   const driverCharge = calculateDriverCharge(totalTime);
@@ -69,15 +69,4 @@ const calculatePrice = (
     carbonOffset +
     milageCharge;
   return price;
-};
-
-module.exports = {
-  calculatePrice,
-  calculateFloorCharge,
-  getCongestionCharge,
-  calculateLateCharge,
-  getCarbonOffset,
-  calculateMilageCharge,
-  getStandardLoadingUnloadingTime,
-  getTotalTime,
 };

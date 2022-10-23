@@ -1,21 +1,21 @@
-const express = require("express");
-const bodyParser = require("body-parser");
+import express, { Request, Response } from "express";
+import bodyParser from "body-parser";
 
-const {
+import {
   calculatePrice,
   calculateFloorCharge,
   getCongestionCharge,
   calculateLateCharge,
   getCarbonOffset,
   calculateMilageCharge,
-} = require("./utils/quotation_utils");
+} from "./utils/quotation_utils";
 
 const app = express();
 app.use(bodyParser.json());
 
 const port = 3000;
 
-app.get("/get_quote", (req, res) => {
+app.get("/get_quote", (req: Request, res: Response) => {
   const {
     mileage,
     congestion_charge,

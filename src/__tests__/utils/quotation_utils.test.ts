@@ -1,9 +1,9 @@
-const utils = require("../../utils/quotation_utils");
-const {
-    congestionCharge: correctCongestionCharge,
-    lateCharge: correctLateCharge,
-    carbonOffset: correctCarbonOffset,
-  } = require("../../const");
+import * as utils from "../../utils/quotation_utils";
+import {
+  congestionCharge as correctCongestionCharge,
+  lateCharge as correctLateCharge,
+  carbonOffset as correctCarbonOffset,
+} from "../../const";
 
 describe("test quotation utils", () => {
   afterEach(() => {
@@ -17,20 +17,20 @@ describe("test quotation utils", () => {
     });
 
     it("should return 0 when isCongested false", () => {
-        const congestionCharge = utils.getCongestionCharge(false);
-        expect(congestionCharge).toBe(0);
+      const congestionCharge = utils.getCongestionCharge(false);
+      expect(congestionCharge).toBe(0);
     });
   });
 
   describe("test calculateLateCharge", () => {
     it("should return correct value when isLate true", () => {
-      const lateCharge = utils.calculateLateCharge(true);
+      const lateCharge = utils.calculateLateCharge(true, 1);
       expect(lateCharge).toBe(correctLateCharge);
     });
 
     it("should return 0 when isLate false", () => {
-        const lateCharge = utils.calculateLateCharge(false);
-        expect(lateCharge).toBe(0);
+      const lateCharge = utils.calculateLateCharge(false, 1);
+      expect(lateCharge).toBe(0);
     });
   });
 
@@ -41,8 +41,8 @@ describe("test quotation utils", () => {
     });
 
     it("should return 0 when isCarbonOffset false", () => {
-        const carbonOffset = utils.getCarbonOffset(false);
-        expect(carbonOffset).toBe(0);
+      const carbonOffset = utils.getCarbonOffset(false);
+      expect(carbonOffset).toBe(0);
     });
   });
 });
