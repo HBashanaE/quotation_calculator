@@ -13,7 +13,8 @@ const {
 const app = express();
 app.use(bodyParser.json());
 
-const port = 3000;
+require("dotenv").config();
+const port = process.env.PORT || 3000;
 
 app.get("/get_quote", (req, res) => {
   const {
