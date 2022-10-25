@@ -25,8 +25,7 @@ app.get("/get_quote", (req, res) => {
     const { details } = error;
     const message = details.map((i) => i.message).join(",");
     res.status(422).json({
-      message: "Invalid request",
-      data: req.body,
+      data: value,
       message,
     });
   } else {
@@ -37,22 +36,28 @@ app.get("/get_quote", (req, res) => {
       no_of_floor,
       late_charge,
       carbon_offset,
-    } = req.body;
+      driver_hourly_rate,
+      helper_hourly_rate,
+      van_type,
+    } = value;
 
-    const distanceTravelled = mileage; // Is this correct?
-    const lateHours = 1; // How to get late hours?
+    const distanceTravelled = mileage;
+    const lateHours = 1;
     const floorCharge = calculateFloorCharge(no_of_floor);
     const congestionCharge = getCongestionCharge(congestion_charge);
     const lateChage = calculateLateCharge(late_charge, lateHours);
     const carbonOffset = getCarbonOffset(carbon_offset);
     const milageCharge = calculateMilageCharge(distanceTravelled);
     console.log({
-      floorCharge,
-      congestionCharge,
-      lateChage,
-      carbonOffset,
-      milageCharge,
+      mileage,
+      congestion_charge,
       drive_time,
+      no_of_floor,
+      late_charge,
+      carbon_offset,
+      driver_hourly_rate,
+      helper_hourly_rate,
+      van_type,
     });
     const price = calculatePrice(
       floorCharge,
@@ -60,7 +65,10 @@ app.get("/get_quote", (req, res) => {
       lateChage,
       carbonOffset,
       milageCharge,
-      drive_time
+      drive_time,
+      driver_hourly_rate,
+      helper_hourly_rate,
+      van_type
     );
     res.json({ price });
   }

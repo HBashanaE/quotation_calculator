@@ -4,20 +4,29 @@ const {
   lateCharge,
   carbonOffset,
   perMileCharge,
-  driverHourlyRate,
-  helperHourlyRate,
   floorChargePerFloor,
 } = require("../const");
 
-const getTotalTime = (driveTime) => {
-  if (driveTime < 60) {
-    return getStandardLoadingUnloadingTime() + driveTime;
+const getTotalTime = (driveTime, vanType) => {
+  if (driveTime < 1) {
+    return 2;
   }
-  return roundToNearest30Minutes(getStandardLoadingUnloadingTime() + driveTime);
+  return roundToNearest30Minutes(getStandardLoadingUnloadingTime(vanType) + driveTime);
 };
 
-const getStandardLoadingUnloadingTime = () => {
-  return 60;
+const getStandardLoadingUnloadingTime = (van_type) => {
+  switch (van_type) {
+    case "SMALL":
+      return 1;
+    case "MEDIUM":
+      return 1;
+    case "LARGE":
+      return 2;
+    case "LUTON":
+      return 3;
+    default:
+      break;
+  }
 };
 
 const getCongestionCharge = (isCongested) => {
@@ -36,12 +45,8 @@ const calculateMilageCharge = (distanceTravelled) => {
   return distanceTravelled * perMileCharge;
 };
 
-const calculateDriverCharge = (totalTime) => {
-  return (totalTime / 60) * driverHourlyRate;
-};
-
-const calculateHelperCharge = (totalTime) => {
-  return (totalTime / 60) * helperHourlyRate;
+const calculateCharge = (totalTime, hourlyRate) => {
+  return totalTime * hourlyRate;
 };
 
 const calculateFloorCharge = (noOfFloors) => {
@@ -54,11 +59,24 @@ const calculatePrice = (
   lateChage,
   carbonOffset,
   milageCharge,
-  driveTime
+  driveTime,
+  driver_hourly_rate,
+  helper_hourly_rate,
+  vanType
 ) => {
-  const totalTime = getTotalTime(driveTime);
-  const driverCharge = calculateDriverCharge(totalTime);
-  const helperCharge = calculateHelperCharge(totalTime);
+  const totalTime = getTotalTime(driveTime, vanType);
+  const driverCharge = calculateCharge(totalTime, driver_hourly_rate);
+  const helperCharge = calculateCharge(totalTime, helper_hourly_rate);
+
+  console.log("Calculate", {
+    driverCharge,
+    helperCharge,
+    floorCharge,
+    congestionCharge,
+    lateChage,
+    carbonOffset,
+    milageCharge,
+  });
 
   const price =
     driverCharge +
