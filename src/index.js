@@ -36,18 +36,14 @@ app.get("/get_quote", (req, res) => {
       no_of_floor,
       late_charge,
       carbon_offset,
-      driver_hourly_rate,
-      helper_hourly_rate,
       van_type,
     } = value;
 
-    const distanceTravelled = mileage;
-    const lateHours = 1;
     const floorCharge = calculateFloorCharge(no_of_floor);
     const congestionCharge = getCongestionCharge(congestion_charge);
-    const lateChage = calculateLateCharge(late_charge, lateHours);
+    const lateChage = calculateLateCharge(late_charge, drive_time);
     const carbonOffset = getCarbonOffset(carbon_offset);
-    const milageCharge = calculateMilageCharge(distanceTravelled);
+    const milageCharge = calculateMilageCharge(mileage);
     console.log({
       mileage,
       congestion_charge,
@@ -55,8 +51,6 @@ app.get("/get_quote", (req, res) => {
       no_of_floor,
       late_charge,
       carbon_offset,
-      driver_hourly_rate,
-      helper_hourly_rate,
       van_type,
     });
     const price = calculatePrice(
@@ -66,8 +60,6 @@ app.get("/get_quote", (req, res) => {
       carbonOffset,
       milageCharge,
       drive_time,
-      driver_hourly_rate,
-      helper_hourly_rate,
       van_type
     );
     res.json({ price });

@@ -5,6 +5,7 @@ const {
   carbonOffset,
   perMileCharge,
   floorChargePerFloor,
+  helperHourlyRate,
 } = require("../const");
 
 const getTotalTime = (driveTime, vanType) => {
@@ -14,8 +15,8 @@ const getTotalTime = (driveTime, vanType) => {
   return roundToNearest30Minutes(getStandardLoadingUnloadingTime(vanType) + driveTime);
 };
 
-const getStandardLoadingUnloadingTime = (van_type) => {
-  switch (van_type) {
+const getStandardLoadingUnloadingTime = (vanType) => {
+  switch (vanType) {
     case "SMALL":
       return 1;
     case "MEDIUM":
@@ -33,8 +34,8 @@ const getCongestionCharge = (isCongested) => {
   return isCongested ? congestionCharge : 0;
 };
 
-const calculateLateCharge = (isLate, lateHours) => {
-  return isLate ? lateCharge : 0;
+const calculateLateCharge = (isLate, driveTime) => {
+  return isLate ? driveTime/4 : 0;
 };
 
 const getCarbonOffset = (isCarbonOffset) => {
@@ -45,8 +46,25 @@ const calculateMilageCharge = (distanceTravelled) => {
   return distanceTravelled * perMileCharge;
 };
 
-const calculateCharge = (totalTime, hourlyRate) => {
-  return totalTime * hourlyRate;
+const calculateDriverCharge = (totalTime, vanType) => {
+  let driverHourlyRate;
+  switch (vanType) {
+    case "SMALL":
+      driverHourlyRate = 50;
+    case "MEDIUM":
+      driverHourlyRate = 60;
+    case "LARGE":
+      driverHourlyRate = 70;
+    case "LUTON":
+      driverHourlyRate = 90;
+    default:
+      break;
+  }
+  return totalTime * driverHourlyRate;
+};
+
+const calculateHelperCharge = (totalTime) => {
+  return totalTime * helperHourlyRate;
 };
 
 const calculateFloorCharge = (noOfFloors) => {
@@ -60,13 +78,11 @@ const calculatePrice = (
   carbonOffset,
   milageCharge,
   driveTime,
-  driver_hourly_rate,
-  helper_hourly_rate,
   vanType
 ) => {
   const totalTime = getTotalTime(driveTime, vanType);
-  const driverCharge = calculateCharge(totalTime, driver_hourly_rate);
-  const helperCharge = calculateCharge(totalTime, helper_hourly_rate);
+  const driverCharge = calculateDriverCharge(totalTime, vanType);
+  const helperCharge = calculateHelperCharge(totalTime);
 
   console.log("Calculate", {
     driverCharge,
